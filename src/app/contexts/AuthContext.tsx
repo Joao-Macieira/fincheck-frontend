@@ -3,6 +3,7 @@ import { localStorageKeys } from '../config/localStorageKeys';
 import { useQuery } from '@tanstack/react-query';
 import { usersService } from '../services/usersService';
 import { toast } from 'react-hot-toast';
+import { PageLoader } from '../../view/components/PageLoader';
 
 interface AuthContextValue {
   signedIn: boolean;
@@ -19,7 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isFetching } = useQuery({
+  const { isError, isFetching, isSuccess, remove } = useQuery({
     queryKey: ['users', 'me'],
     queryFn: () => usersService.me(),
     enabled: signedIn,
@@ -34,8 +35,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signout = useCallback(() => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
+    remove();
+
     setSignedIn(false);
-  }, []);
+  }, [remove]);
 
   useEffect(() => {
     if (isError) {
@@ -45,12 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [isError, signout]);
 
   if (isFetching) {
-    return <h1>Loading</h1>
+    return <PageLoader />;
   }
 
   return (
     <AuthContext.Provider value={{
-      signedIn,
+      signedIn: isSuccess && signedIn,
       signin,
       signout,
     }}>
