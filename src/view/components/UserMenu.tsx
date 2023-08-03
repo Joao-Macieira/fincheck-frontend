@@ -1,7 +1,10 @@
 import { ExitIcon } from '@radix-ui/react-icons';
 import { DropdownMenu } from './DropdownMenu';
+import { useAuth } from '../../app/hooks/useAuth';
 
 export function UserMenu() {
+  const { signout } = useAuth();
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -13,7 +16,10 @@ export function UserMenu() {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content classname='w-32'>
-        <DropdownMenu.Item classname='flex items-center justify-between'>
+        <DropdownMenu.Item
+          classname='flex items-center justify-between'
+          onSelect={signout}
+        >
           Sair
           <ExitIcon className='w-4 h-4'/>
         </DropdownMenu.Item>

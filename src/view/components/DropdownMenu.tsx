@@ -30,7 +30,7 @@ function DropdownMenuContent({ children, classname }: DropdownMenuContentProps) 
       <RadixDropdownMenu.Content
         className={
           cn(
-            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]',
+            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] data-[side=bottom]:animate-slide-up-and-fade',
             classname
           )
         }
@@ -43,14 +43,16 @@ function DropdownMenuContent({ children, classname }: DropdownMenuContentProps) 
 
 interface DropdownMenuItemProps {
   children: React.ReactNode;
-  classname?: string
+  classname?: string;
+  onSelect?(): void;
 }
 
-function DropdownMenuItem({ children, classname }: DropdownMenuItemProps) {
+function DropdownMenuItem({ children, classname, onSelect }: DropdownMenuItemProps) {
   return (
     <RadixDropdownMenu.Item
+      onSelect={onSelect}
       className={cn(
-        'min-h-[48px] outline-none p-4 text-sm text-gray-800 rounded-2xl hover:bg-gray-50 transition-colors',
+        'min-h-[48px] outline-none p-4 text-sm text-gray-800 rounded-2xl data-[highlighted]:bg-gray-50 transition-colors cursor-pointer',
         classname,
       )}
     >
