@@ -13,6 +13,7 @@ function DropdownMenuTrigger({ children }: { children: React.ReactNode }) {
   return (
     <RadixDropdownMenu.Trigger
       className='outline-none'
+      asChild
     >
       {children}
     </RadixDropdownMenu.Trigger>
