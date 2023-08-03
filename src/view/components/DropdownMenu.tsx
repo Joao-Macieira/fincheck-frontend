@@ -21,7 +21,7 @@ function DropdownMenuTrigger({ children }: { children: React.ReactNode }) {
 
 interface DropdownMenuContentProps {
   children: React.ReactNode;
-  classname?: string
+  classname?: string;
 }
 
 function DropdownMenuContent({ children, classname }: DropdownMenuContentProps) {
@@ -30,7 +30,9 @@ function DropdownMenuContent({ children, classname }: DropdownMenuContentProps) 
       <RadixDropdownMenu.Content
         className={
           cn(
-            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] data-[side=bottom]:animate-slide-up-and-fade z-50',
+            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] z-50',
+            'data-[side=bottom]:animate-slide-up-and-fade',
+            'data-[side=top]:animate-slide-down-and-fade',
             classname
           )
         }
