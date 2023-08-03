@@ -30,7 +30,7 @@ function DropdownMenuContent({ children, classname }: DropdownMenuContentProps) 
       <RadixDropdownMenu.Content
         className={
           cn(
-            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] data-[side=bottom]:animate-slide-up-and-fade',
+            'p-2 rounded-2xl bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] data-[side=bottom]:animate-slide-up-and-fade z-50',
             classname
           )
         }
@@ -52,7 +52,7 @@ function DropdownMenuItem({ children, classname, onSelect }: DropdownMenuItemPro
     <RadixDropdownMenu.Item
       onSelect={onSelect}
       className={cn(
-        'min-h-[48px] outline-none p-4 text-sm text-gray-800 rounded-2xl data-[highlighted]:bg-gray-50 transition-colors cursor-pointer',
+        'min-h-[40px] outline-none flex items-center px-4 py-2 text-sm text-gray-800 rounded-2xl data-[highlighted]:bg-gray-50 transition-colors cursor-pointer',
         classname,
       )}
     >
