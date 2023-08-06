@@ -20,6 +20,7 @@ export function Accounts() {
     setSliderState,
     toggleValueVisibility,
     openNewAccountModal,
+    currentBalance,
   } = useAccountController();
 
   return (
@@ -43,7 +44,7 @@ export function Accounts() {
                   !areValuesVisible && 'blur-md'
                 )}
               >
-                {formatCurrency(1000)}
+                {formatCurrency(currentBalance)}
               </strong>
               <button className=" h-8 w-8 flex items-center justify-center" onClick={toggleValueVisibility}>
                 <EyeIcon open={!areValuesVisible} />
@@ -99,32 +100,16 @@ export function Accounts() {
                     <AccountSliderNavigation isBeginning={sliderState.isBeginnig} isEnd={sliderState.isEnd} />
                   </div>
 
-                  <SwiperSlide>
-                    <AccountCard
-                    balance={1000.23}
-                    color="#7950f2"
-                    name="Nubank"
-                    type="CHECKING"
-                    />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                    balance={1000.23}
-                    color="#333"
-                    name="XP"
-                    type="INVESTMENT"
-                    />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                    balance={1000.23}
-                    color="#0f0"
-                    name="Carteira"
-                    type="CASH"
-                    />
-                  </SwiperSlide>
+                  {accounts.map(account => (
+                    <SwiperSlide key={account.id}>
+                      <AccountCard
+                        balance={account.currentBalance}
+                        color={account.color}
+                        name={account.name}
+                        type={account.type}
+                      />
+                    </SwiperSlide>
+                  ))}
                 </Swiper>
               </div>
             )}
