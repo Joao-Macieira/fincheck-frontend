@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,7 +28,6 @@ export function useEditTransactionModalController(
   transaction: Transaction | null,
   onClose: () => void
 ) {
-
   const {
     handleSubmit: hookFormHandleSubmit,
     register,
@@ -45,6 +44,8 @@ export function useEditTransactionModalController(
     }
   });
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
   const queryClient = useQueryClient();
   const { accounts } = useBankAccounts();
   const { categories: categoriesList } = useCategories();
@@ -54,6 +55,11 @@ export function useEditTransactionModalController(
   ), [categoriesList, transaction]);
 
   const { isLoading, mutateAsync } = useMutation(transactionService.update);
+
+  const {
+    isLoading: isLoadingRemove,
+    mutateAsync: removeTransaction,
+  } = useMutation(transactionService.remove);
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
@@ -77,6 +83,27 @@ export function useEditTransactionModalController(
     }
   });
 
+  function handleOpenDeleteModal() {
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleDeleteTransaction() {
+    try {
+      await removeTransaction(transaction!.id);
+
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
+      toast.success(`A ${transaction!.type === 'EXPENSE' ? 'despesa' : 'receita'} foi deletada com sucesso!`);
+      onClose();
+    } catch {
+      toast.error(`Erro ao deletar a ${transaction!.type === 'EXPENSE' ? 'despesa' : 'receita'}`);
+    }
+  }
+
 
   return {
     register,
@@ -86,5 +113,10 @@ export function useEditTransactionModalController(
     accounts,
     categories,
     isLoading,
+    isDeleteModalOpen,
+    isLoadingRemove,
+    handleDeleteTransaction,
+    handleCloseDeleteModal,
+    handleOpenDeleteModal,
   }
 }
