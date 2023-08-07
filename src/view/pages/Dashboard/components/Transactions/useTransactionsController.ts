@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDashboard } from "../DashboardContext/useDashboard";
 import { useTransactions } from "../../../../../app/hooks/useTransactions";
 import { TransactionsFilters } from "../../../../../app/services/transactionsService/getAll";
+import { Transaction } from "../../../../../app/entities/Transaction";
 
 type HandleApplyFiltersProps = {
   bankAccountId: string | undefined;
@@ -16,6 +17,8 @@ export function useTransactionsController() {
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
   });
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [transactionBeingEdited, setTransactionBeingEdited] = useState<Transaction | null>(null);
 
   const {
     transactions,
@@ -49,6 +52,16 @@ export function useTransactionsController() {
     setIsFiltersModalOpen(false);
   }
 
+  function handleOpenEditModal(transaction: Transaction) {
+    setIsEditModalOpen(true);
+    setTransactionBeingEdited(transaction);
+  }
+
+  function handleCloseEditModal() {
+    setIsEditModalOpen(false);
+    setTransactionBeingEdited(null);
+  }
+
   useEffect(() => {
     refetchTransactions();
   }, [filters, refetchTransactions]);
@@ -64,5 +77,9 @@ export function useTransactionsController() {
     filters,
     handleChangeFilters,
     handleApplyFilters,
+    transactionBeingEdited,
+    isEditModalOpen,
+    handleOpenEditModal,
+    handleCloseEditModal,
   }
 }
